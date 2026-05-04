@@ -27,11 +27,10 @@ export class Service {
           featuredImage,
           status,
           userId,
-        }
+        },
       );
     } catch (error) {
-      console.error("createPost error:", error);
-      return null;
+      console.log("createPost error", error);
     }
   }
 
@@ -46,11 +45,10 @@ export class Service {
           content,
           featuredImage,
           status,
-        }
+        },
       );
     } catch (error) {
-      console.error("updatePost error:", error);
-      return null;
+      console.log("updatePost error", error);
     }
   }
 
@@ -59,11 +57,11 @@ export class Service {
       await this.databases.deleteDocument(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionId,
-        slug
+        slug,
       );
       return true;
     } catch (error) {
-      console.error("deletePost error:", error);
+      console.log("deletePost error", error);
       return false;
     }
   }
@@ -73,11 +71,11 @@ export class Service {
       return await this.databases.getDocument(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionId,
-        slug
+        slug,
       );
     } catch (error) {
-      console.error("getPost error:", error);
-      return null;
+      console.log("getPost error", error);
+      return false;
     }
   }
 
@@ -86,11 +84,11 @@ export class Service {
       return await this.databases.listDocuments(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionId,
-        queries
+        queries,
       );
     } catch (error) {
-      console.error("getPosts error:", error);
-      return null;
+      console.log("getPosts error", error);
+      return false;
     }
   }
 
@@ -99,11 +97,11 @@ export class Service {
       return await this.bucket.createFile(
         conf.appwriteBucketId,
         ID.unique(),
-        file
+        file,
       );
     } catch (error) {
-      console.error("uploadFile error:", error);
-      return null;
+      console.log("uploadFile error", error);
+      return false;
     }
   }
 
@@ -112,18 +110,13 @@ export class Service {
       await this.bucket.deleteFile(conf.appwriteBucketId, fileId);
       return true;
     } catch (error) {
-      console.error("deleteFile error:", error);
+      console.log("deleteFile error", error);
       return false;
     }
   }
-
   getFilePreview(fileId) {
     if (!fileId) return "";
-    return this.bucket.getFileView(conf.appwriteBucketId, fileId);
-  }
 
-  getFileView(fileId) {
-    if (!fileId) return "";
     return this.bucket.getFileView(conf.appwriteBucketId, fileId);
   }
 }
